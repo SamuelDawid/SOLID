@@ -46,3 +46,8 @@ Nie, klasas nie narusza SRP poniewaz jest uzywana do tworzenia zamowienia. Nie w
 
 ### 2. O — Open/Closed Principle
 
+1. Co dokładnie znaczy „otwarte na rozszerzenie, zamknięte na modyfikację"?
+2. Pokaż konkretnie na kodzie: ile plików zmieniasz, dodając nowy typ klienta przed refaktorem, a ile po refaktorze?
+3. Czy każdy switch musi być rozbity na polimorfizm? Wymień co najmniej dwie sytuacje, w których lepiej zostawić switch.
+4. Jakie są minusy „przedwczesnego" stosowania OCP (interfejs dla jednej implementacji)?
+
