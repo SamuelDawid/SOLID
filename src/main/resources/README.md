@@ -64,3 +64,4 @@ sprawdzac implementacji interfejsu.
 3. Co znaczy „faworyzuj kompozycję nad dziedziczeniem"? Pokaż konkretnie na klasie SquareByComposition.
 4. Jak rekordy w Javie pomagają unikać naruszeń LSP?
 
+// skonczone na kro po kroku - jak unikac naruszen lsp
