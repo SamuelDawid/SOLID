@@ -47,7 +47,20 @@ Nie, klasas nie narusza SRP poniewaz jest uzywana do tworzenia zamowienia. Nie w
 ### 2. O — Open/Closed Principle
 
 1. Co dokładnie znaczy „otwarte na rozszerzenie, zamknięte na modyfikację"?
+otwarte na rozszerzenie oznacza tak ja w naszym przykladzie z discountPolicy, dodajemy nowa klase do kazdego rodzaju discountu, w przyszlosci jezeli chcemy dodac Valentines Day discount to wystarczy stworzyc klase
+i zaimplementowac DiscountPolicy interface. Zamkniete na modyfikacje chodzi o to ze instniejaca klasa PriceCalculator i inne klasy zostaja nietkiete wiec nie trzeba ich testowac ponownie. 
 2. Pokaż konkretnie na kodzie: ile plików zmieniasz, dodając nowy typ klienta przed refaktorem, a ile po refaktorze?
+Zmieniam tylko jeden plik w obu przypadkach. Jednak po refaktorze tworzymy nowy plik i zero plikow zmodyfikowancych a przez jeden plik jest modyfikowany.
 3. Czy każdy switch musi być rozbity na polimorfizm? Wymień co najmniej dwie sytuacje, w których lepiej zostawić switch.
+Nie kiedy nie trzeba go edytowac za kazdym razem gdy dochodzi nowy wariant.
 4. Jakie są minusy „przedwczesnego" stosowania OCP (interfejs dla jednej implementacji)?
+Abstakcja w abstracji, jezeli dodamy OCP ale bedzie tylko jedna implemenatacja, czyli dostajemy martwy kod i gorsza czytelnosc, dodatkowy plik ktory nic nie wnosi a zeby sprawdzic co sie dzieje musimy
+sprawdzac implementacji interfejsu.
+
+### 3. L — Liskov Substitution Principle
+
+1. Dlaczego „kwadrat to specjalny prostokąt" działa w matematyce, ale łamie LSP w kodzie?
+2. Wymień trzy typowe naruszenia LSP, które łatwo przeoczyć w code review.
+3. Co znaczy „faworyzuj kompozycję nad dziedziczeniem"? Pokaż konkretnie na klasie SquareByComposition.
+4. Jak rekordy w Javie pomagają unikać naruszeń LSP?
 
