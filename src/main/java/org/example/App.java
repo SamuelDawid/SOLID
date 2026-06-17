@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.zad06.*;
+import org.example.solid.zad06.*;
 
 import java.util.List;
 
