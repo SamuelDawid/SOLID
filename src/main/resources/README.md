@@ -94,7 +94,14 @@ wtedy zamiast widzic tylko UserReader opcji widzi wszystkie 12.
 ### 5. D — Dependency Inversion Principle
 
 1. Co dokładnie jest „odwrócone" w Dependency Inversion?
+Odwrocona jest zaleznosc w ktorej klasa biznesowa wspolpracuje z repo. W pierwszym przypadku tworzylismy repo w klasie biznesowaj a w drugim przypadku dodawalismy interface ktory wymuszal implementacje
+na Repository. 
 2. Dlaczego konstruktorowe DI jest lepsze niż setterowe? Pokaż konkretny scenariusz, w którym setter zawodzi.
+Z karty pracy wynika na to ze konstruktorow jest robione raz i sprawdzane przez konstruktor wiec nie da sie dodac null objectu. A przy setterze mozemy dodaj jakis obiekt ktorego nie chcemy.
 3. Jak DIP łączy się z testowalnością? Pokaż konkretną korzyść na przykładzie `OrderService`.
+No na OrderService mozemy dodaj baze danych ktora moze sie roznic moze to byc h2 inmemory database do tesotwo, potem mozemy ja zamienic na SQL albo na No-SQL. I wszystko bedzie dzialac w Mocku.
 4. Kiedy DIP jest over-engineeringiem? Wskazówka: YAGNI.
+Kiedy kazdy interface bedzie mial np tylko 1 mala metode. takze samo formowanie interfacow i ich dziedziczenie bedzie kosztowac nas wiecej kodu niz napisane 2-3 malych metod
 5. Czym różni się **klasyczna zależność** od **odwróconej**? Narysuj strzałkę zależności w obu wariantach.
+Klasyczna zaleznosc - uzywa -> Repository
+Odwrocona zaleznosc - uzywa -> interface -> implementujeRepository
