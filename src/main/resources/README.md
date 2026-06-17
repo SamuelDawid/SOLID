@@ -22,18 +22,7 @@ Jezeli ta funkcja to tylko jedna rzecz to nie jest tutaj potrzeba zasada SOLID, 
    Poniewaz DIP to dodanie dodatkowego interfajsu, wstrzykiwanie, dodanie zaleznosci gdzie pozniej. A jezeli implementacja bedzie i jest tylko jedna to dodajemy abstakcje do abstakcji.
 
 4. Czy SOLID to sekwencja kroków (S → O → L → I → D) przy projektowaniu nowej klasy? Uzasadnij.
-   Nie Solid to narzedzie a zada literka pokazuje jakias zasade ktora mozna by bylo zastosowac. Nie jest to koniecznie ale w niektoch miejscach zalecane 
-
-### 1. S — Single Responsibility Principle
-1. Wypisz publiczne metody klasy. Spróbuj opisać klasę jednym zdaniem **bez słowa „i"**.
-metody publiczne klasy to createOrder i calculate Total.
-OrderService to klasa ktora pozwala nam zarzadzac creacja nowych Orders i uzywa independencji injection dla repository, email, report service.
-2. Jeśli musisz powiedzieć „klasa robi A **i** B **i** C" — SRP naruszone.
-3. Dla każdej grupy metod zadaj pytanie: kto (jaki aktor / dział biznesowy) zażąda zmiany?
-4. Wydziel każdą grupę do osobnej klasy/interfejsu. Nazwa nowej klasy powinna opisywać dokładnie tę jedną odpowiedzialność.
-5. `OrderService` zna logikę biznesową, ale **nie wie**, jak działa baza, email czy PDF — to są jego zależności w postaci interfejsów.
-6. Test `OrderService` mockuje trzy interfejsy i wystarczy — żaden test nie potrzebuje prawdziwej bazy, SMTP ani biblioteki PDF.
-
+   Nie Solid to narzedzie a zada literka pokazuje jakias zasade ktora mozna by bylo zastosowac. Nie jest to koniecznie ale w niektoch miejscach zalecane
 
 1. Klasa ma 12 metod publicznych. Czy narusza SRP? Od czego zależy odpowiedź?
 Jezeli wszystkie metody sluza do jednej odpowiedzialnosci to SRP nie jest naruszone. Czyli jeden powod do miany/jeden aktor decyduje o tym czy klasa narusza SRP a nie ilosc moetod.
@@ -95,7 +84,7 @@ wtedy zamiast widzic tylko UserReader opcji widzi wszystkie 12.
 
 1. Co dokładnie jest „odwrócone" w Dependency Inversion?
 Odwrocona jest zaleznosc w ktorej klasa biznesowa wspolpracuje z repo. W pierwszym przypadku tworzylismy repo w klasie biznesowaj a w drugim przypadku dodawalismy interface ktory wymuszal implementacje
-na Repository. 
+na Repository. czyli wyski poziom 
 2. Dlaczego konstruktorowe DI jest lepsze niż setterowe? Pokaż konkretny scenariusz, w którym setter zawodzi.
 Z karty pracy wynika na to ze konstruktorow jest robione raz i sprawdzane przez konstruktor wiec nie da sie dodac null objectu. A przy setterze mozemy dodaj jakis obiekt ktorego nie chcemy.
 3. Jak DIP łączy się z testowalnością? Pokaż konkretną korzyść na przykładzie `OrderService`.
@@ -104,4 +93,21 @@ No na OrderService mozemy dodaj baze danych ktora moze sie roznic moze to byc h2
 Kiedy kazdy interface bedzie mial np tylko 1 mala metode. takze samo formowanie interfacow i ich dziedziczenie bedzie kosztowac nas wiecej kodu niz napisane 2-3 malych metod
 5. Czym różni się **klasyczna zależność** od **odwróconej**? Narysuj strzałkę zależności w obu wariantach.
 Klasyczna zaleznosc - uzywa -> Repository
-Odwrocona zaleznosc - uzywa -> interface -> implementujeRepository
+Odwrocona zaleznosc - uzywa -> interface <- implementujeRepository
+
+### 6. Mini Projekt
+
+1. Co konkretnie zyskałeś, zamieniając Map<String, Object> na rekord User?
+Niemodykiwoalny obiekt User ktora ma swoje konkretne pola ktore nie moga byc nadpisane. I record dodaje nam bezpieczenstwo typow. 
+2. Wymień trzy zmiany biznesowe, które byłyby trudne w wersji przed refaktorem, a są łatwe po.
+Dodanie nowej regoly walidaji, wymiana bazy danych, wymiana kanalu powiadomomien.
+3. Gdzie konkretnie zostały zastosowane: SRP, OCP, DIP w docelowej architekturze? Wskaż konkretne klasy / interfejsy.
+SRP - UserService, UserValidator,InMemoryRepo, OCP - ValidationRune + userValidator record, DIP - UserRepository interface.
+4. Klasa ValidationRule to interfejs z jedną metodą. Czy to nie narusza zasady „nie twórz interfejsu dla jednej implementacji" (YAGNI)?
+Nie poniewaz zasada YAGNI dotyczy liczby implementacji a nie liczby metod.
+5. Jeśli właściciel sklepu mówi „dodajemy regułę: email nie może kończyć się na .ru" — ile plików musisz zmienić w wersji po refaktorze? A w wersji przed?
+Po refaktorze dodajemy nowa Rule do listy userValidator i tyle a przed musimy dodac zasade do validacji w Usermanager czyli modyfikujesz dzialajacy kod.
+6. Co byłoby trudne dodać w wersji God Class, a łatwe po refaktoryzacji? Wymień co najmniej cztery rzeczy.
+Nowa regola validacji, wymiana bazy, wymiana powiadomien, izolowany test.
+7. Dlaczego refaktor „wszystko naraz w jednym PR" jest złym pomysłem? Co stracisz?
+Poniewaz jezeli cos zle zrefaktorujemy to musy sie wrocic do wersji przed zamiast do konkretnego commita, co czesto marnuje czas bo moze 3/5 rzeczy byly zrobione dobrze.
