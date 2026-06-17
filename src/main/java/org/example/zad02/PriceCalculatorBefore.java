@@ -9,10 +9,10 @@ public class PriceCalculatorBefore {
 
     public double calculate(OrderManagerBefore.Order order, String customerType) {
         return switch (customerType) {
-            case "STANDARD"  -> order.total();
-            case "VIP"       -> order.total() * 0.85;
-            case "WHOLESALE" -> order.total() * 0.70;
-            case "EMPLOYEE"  -> order.total() * 0.50;
+            case "STANDARD"  -> order.getTotal();
+            case "VIP"       -> order.getTotal() * 0.85;
+            case "WHOLESALE" -> order.getTotal() * 0.70;
+            case "EMPLOYEE"  -> order.getTotal() * 0.50;
             default -> throw new IllegalArgumentException("Nieznany typ: " + customerType);
         };
     }

@@ -58,10 +58,43 @@ Abstakcja w abstracji, jezeli dodamy OCP ale bedzie tylko jedna implemenatacja, 
 sprawdzac implementacji interfejsu.
 
 ### 3. L — Liskov Substitution Principle
+Bird / Eagle - dziedziczenie
+Bird / Penguin - LSP
+BankAccount / SavingsAccount - LSP
+Animal / Dog - dziedziczenie 
+Vehicle / ElectricCar - LSP
+Vehicle / Tank (gąsienice zamiast kół) - dziedziczenie
 
 1. Dlaczego „kwadrat to specjalny prostokąt" działa w matematyce, ale łamie LSP w kodzie?
+Poniewaz w matematyce kazdy kwadrat to prostokat ale nie kazdy prostokat to kwadrat - czyli jak jest napisane is-a relationship nie zawsze przeklada sie na dziedziczenie. Modele obiektowe nie musza odzwierciedlac swiata rzeczytistego musza odzwierciedlac kontrakty zachaowan.
+Czyli w kodzie Rectangle ma kontrakt setWidth i setHeigh ktore sa niezalezne. Square go nie dotrzymuje bo ustawienie szerokosci wymusza wysokosc.
 2. Wymień trzy typowe naruszenia LSP, które łatwo przeoczyć w code review.
+pierwsze - nowy typ wykatku - podklasa rzuca wyjatek ktorego klient klasy bazowej sie nei spodziewa.
+drugie - wzmocniowy warunek wstepny - podklasa wymaga wiecej niz klasa bazowa.
+trzecie - oslabiony warunek koncowy - po metodzie nie zachodzi gwarancja ktora dawala klasa bazowa.
 3. Co znaczy „faworyzuj kompozycję nad dziedziczeniem"? Pokaż konkretnie na klasie SquareByComposition.
+Zamiast dziedziczyc Rectangle dodajemy go jako pole final czyli robimy has -a relation zamiast is -a relation. Co nam pozwala na zapisanie dzilnosci klasy w inny sposob.
+Co oznacza ze Square nie jest typem Rectangle i nie zostanie wstawiony tam gdzie oczekujemy rectangle czyli nie zostanie zlamany zaden kontrakt.
 4. Jak rekordy w Javie pomagają unikać naruszeń LSP?
+Rekordy maja pola final private i nie maja setterow. A wiec jak juz zrobimy jakis obiekt to nie jestesmy go w stanie zmienic i musi przejsc przez walidacje konstruktora.
 
-// skonczone na kro po kroku - jak unikac naruszen lsp
+### 4. I — Interface Segregation Principle
+
+1. Skąd wiesz, że interfejs jest „za gruby"? Wymień dwa konkretne sygnały.
+Kiedy kazdy department uzywa 2-3 metotod z wielu wymuszanych przez interface oraz kirdy kiedy rzucany jest UnsupportedOperationException w jakiejkolwiek metodzie.
+2. Czy ISP oznacza, że każdy interfejs ma mieć dokładnie jedną metodę? Uzasadnij.
+Nie - ISP oznacza ze kazdy Interface powinien miec metody ktore sa uzywane i przeznaczne lda danego dzialu a nie robienie 12 interfacow z pojedyncza metoda.
+3. Jak ISP łączy się z LSP? Pokaż na przykładzie atrapy szerokiego interfejsu rzucającej `UnsupportedOperationException`.
+Poniewaz ISP wymusza implementacje podobnie jak dziedziczenie, czyli mamy nowy typ wyjatku - podklasa rzuca wyjatek ktore klient klasy bazowej sie nie spodziewal.
+czyli np UserRepository zmusza ReadOnlyUserRepo do zaimplementowania save() /delete() ktory nie jest obslugiwany. 
+4. Klasa `DatabaseUserRepository` implementuje 5 wąskich interfejsów. Czy to OK? Co by było problem?
+Klasa implemetuje tyle interfacow ile potrzebuje, w tym przypadku potrzebuje wszystkich aby zarzadzac repository. Problem moze byc jezeli mamy np UserDisplayService ktory zabira calosc DatabaseUserRepo.
+wtedy zamiast widzic tylko UserReader opcji widzi wszystkie 12.
+
+### 5. D — Dependency Inversion Principle
+
+1. Co dokładnie jest „odwrócone" w Dependency Inversion?
+2. Dlaczego konstruktorowe DI jest lepsze niż setterowe? Pokaż konkretny scenariusz, w którym setter zawodzi.
+3. Jak DIP łączy się z testowalnością? Pokaż konkretną korzyść na przykładzie `OrderService`.
+4. Kiedy DIP jest over-engineeringiem? Wskazówka: YAGNI.
+5. Czym różni się **klasyczna zależność** od **odwróconej**? Narysuj strzałkę zależności w obu wariantach.
