@@ -37,11 +37,11 @@ valueOf zwraca cashed wartosc czyli wartosc ktora juz instnieje zamiast tworzyc 
 ### 3. Wzorzec Abstract Factory
 
 1. Czym różni się Abstract Factory od Factory Method?
-Abstract factory to taka wytwurnia wytwurni, czyli my wymagamy aby stworzyc wytwornie ktora bedzie implementowala metody ktore pozwola jeje cos stworzyc tak jakbysmy tworzyli abstract factory -> factory method -> objects.
+Factory method tworzy tylko jeden typ produktu, gdzie abstact factory tworzy nam cala rodzine prodoktow ze soba spokrewionych poprzez wiele metod i gwaratuje spojnosc.
 2. Co to znaczy „rodzina obiektów" w Abstract Factory? Podaj przykład z UI lub bazą danych.
-Rodzina obiektow to znaczy ze ten sam obiekt ktory wystepuje w innych formatach np button. Moze byc prostokatny, kwadratowy, moze byc polkolem itp.
+Dark-theme faktory poda nam button, checkbox, scrollbar wszystko w charnym odcieniu, gdzie light theme factory zrobi to samo ale w jasnym odcieniu.
 3. Co się stanie, jeśli klient sam stworzy `new PdfHeader()` i połączy go z `HtmlBody()`? Dlaczego Abstract Factory tego nie pozwala?
-Poniewaz bedzie nie bedzie on pochodzil od tej samej wytwurni, pdfReportFactory nie bedzie znalo tego pdfheadera.
+Powstanie type mismatch - broken report. Abstract Factory chroni nas przed tym poniewaz wszystkie obiekty stworzone sa przez jedna fabryke, ktora rowniej ukrywa implementacje w jaki spsob powstal taki obiekt wiec klijent nigdy by nie wiedzial o PDFHEADER. 
 4. Dlaczego dodanie nowego komponentu (np. „logo") do rodziny w Abstract Factory jest droższe niż dodanie nowej rodziny?
 Poniewaz musimy 1 nowy interfejs + 3 implementacje + 3 modyfikacje fabryk + 1 wywołanie to wlasnie glowna wada tego wzorca.
 5. Wymień przykład Abstract Factory z JDK lub bibliotek Jakarta EE (zestaw standardów do dużych aplikacji serwerowych w Javie — *znajomość Jakarta EE nie jest wymagana, wystarczy przykład z JDK*).
