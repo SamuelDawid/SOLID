@@ -52,10 +52,29 @@ Tak potrzebujesz poniewaz zestaw spojnych obiektow pokaze nam ile ich jest i wte
 ### 4. Wzorzec Builder
 
 1. Dlaczego konstruktor klasy docelowej (`Email`) jest `private`?
+Poniewaz tylko builder moze stworzyc obiekt wiec nigdy nie jest zbodowany tylko w polowie i nigdy zmieniany ponownie. 
 2. Czemu walidacja **musi** być w `build()` (lub w konstruktorze klasy docelowej), a nie w setterach Buildera?
+Poniewaz walidacja w jednym miescu odrazu nam daje feedback czy wszystko jest ok przy budowie. Jezeli byloby to zrobione w setterach to obiekt mogl by byc w polowie stworzony i nie jestesmy w stanie
+sprawdzic walidacji dla pol ktore nie sa stworzone.
 3. Wymień dwie kategorie pól w Builderze: wymagane i opcjonalne. Jak każda jest obsługiwana?
+wymagane pole to takie gdzie dostaniemy wyjatek jezeli go brakuje, a opcjonalne to takie pole gdzie jezeli go nie dopiszemy to dostaniemy default value i mozemy go pominac.  
 4. Co znaczy „defensywna kopia" listy `attachments` i dlaczego jest potrzebna?
+Defensywna kopia znaczy nowa kopia tworzona na podstawie referencji do tego samego obiektu, inaczej bysmy mogli modyfikowac immutable object.
 5. Dlaczego każdy setter Buildera zwraca `this`? Co się stanie, gdy zwróci `void`?
+Dizeki temu mozemy zrobic from-subject-build bez this void nic nie zwraca i nasz lancuch przepada.
 6. Kiedy preferować Lombok `@Builder` nad ręczną implementacją, a kiedy odwrotnie?
+Kiedy mamy tak zwany pure boilerplate czyli same pola bez validacji, wtedy lombook jest ok. Jednak kiedy potrzebujemy prawdziwej validacji, albo wartosci domyslne ktore obliczane sa automatycznie.
 7. Wymień 2 Buildery z JDK lub bibliotek (`StringBuilder`, `HttpClient`, ...).
+StringBuilder, Stream.builder(),HttpRequest.newBuilder().
 8. Czy record może mieć Builder? Co Builder dodaje do record'a, którego record sam nie ma?
+Tak rekord moze miec builder, dzieki temu nasz obiekt dodatkowo ma opcjonalne parametry, default values, i czytelny konstruktor kiedy mamy duzo pol.
+
+### 5. Wzorzec Prototype
+
+1. Wytłumacz różnicę między płytką (shallow) a głęboką (deep) kopią. Podaj scenariusz, kiedy płytka jest pułapką.
+2. Dlaczego Joshua Bloch rekomenduje **copy constructor** zamiast `Cloneable`/`clone()`?
+3. Czym przykład `ServerConfig.withHost(...)` różni się od `DocumentTemplate.copy()` koncepcyjnie?
+4. *Pytanie dodatkowe, opcjonalne.* Gdzie w popularnych frameworkach Javy spotkasz Prototype? (Wskazówka: tzw. „scope" — *zakres życia* obiektu w kontenerze; jeśli nie używałeś żadnego frameworka, pomiń.)
+5. Czy record (Java 14+) potrzebuje Prototype? Jaką jego namiastkę daje sam record (kompaktowy konstruktor, deconstruction)?
+6. Dlaczego dla niemutowalnej konfiguracji `withXxx` zwraca **nową** instancję, a nie modyfikuje obecnej?
+7. Wymień scenariusz biznesowy, w którym Prototype jest tańszy niż klasyczny `new` + setery.
