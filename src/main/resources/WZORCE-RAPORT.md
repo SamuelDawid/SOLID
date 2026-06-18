@@ -22,11 +22,40 @@ Nie Eager znaczy od razy gdy klasa zostanie zainicjalizowana, ale JVM laduje kla
 ### 2. Wzorzec Factory Method
 
 1. Dlaczego fabryka **musi** zwracać interfejs/abstrakcyjny typ, a nie konkretną klasę?
-Poniewaz Factory Method jest uzywany kiedy nie wiem dokladnie jakie typy obiektow pojawia sie w programie i jake beda miedzy nimi zaleznosci.
+Zwraca interface poniewaz klijent zna tylko ten interface a nie jego implementacje.
 2. Czym różni się Factory Method od bezpośredniego użycia konstruktora `new`?
-Poniewaz zadaniem kreatora nie jest tworzenie nowych produktow, tylko implementacja kluczowej logiki biznesowej
+przy new klijet musi znac konstruktor, gdzie fabryka ukrywa tworzenie obiektu. Podajemy paramet i dostajemy abstracje nie wiedza ktora klase i jak ja zbudowano.
 3. Wymień 3 statyczne metody fabrykujące z JDK i powiedz, jakie korzyści daje ich istnienie zamiast `new`.
-
+List.of - zwraca podtyp klasy ktorej nie znamy / Optional.of - Mozemy zrobic kilka obiektow o takich samych nazwach gdzie konstruktor nam nie pozwoli / Integer.valueOf - Moze zwrocic instacje z cache zamiast zawsze alokowac nowy obiekt.
 4. Co to znaczy, że fabryka może być „rozszerzalna w runtime"? Jak to osiągnąć (rejestr fabryk)?
+To znaczy ze jezeli mamy mape gdzie przechowujemy typ notification z jakis kluczem, to w runtime ktos sie pyta czy mamy w rejestrze(mapie) notification typu .... jezeli tak to zwracamy jezeli nie to tworzymy obiekt w runtime i dodajemy go do rejestu.
 5. Kiedy Factory Method jest **przesadą**? (Wskazówka: dla 1-2 typów bez wariantowości.)
+Przesada jest tworzenie Fabryki dla 1-2 typow - lepiej wtedy uzyc zwyklego konstruktora.
 6. Co jest lepsze: `Integer.valueOf(42)` czy `new Integer(42)`? Dlaczego (JDK to celowo deprecuje)?
+valueOf zwraca cashed wartosc czyli wartosc ktora juz instnieje zamiast tworzyc nowy obiekt. 
+
+### 3. Wzorzec Abstract Factory
+
+1. Czym różni się Abstract Factory od Factory Method?
+Abstract factory to taka wytwurnia wytwurni, czyli my wymagamy aby stworzyc wytwornie ktora bedzie implementowala metody ktore pozwola jeje cos stworzyc tak jakbysmy tworzyli abstract factory -> factory method -> objects.
+2. Co to znaczy „rodzina obiektów" w Abstract Factory? Podaj przykład z UI lub bazą danych.
+Rodzina obiektow to znaczy ze ten sam obiekt ktory wystepuje w innych formatach np button. Moze byc prostokatny, kwadratowy, moze byc polkolem itp.
+3. Co się stanie, jeśli klient sam stworzy `new PdfHeader()` i połączy go z `HtmlBody()`? Dlaczego Abstract Factory tego nie pozwala?
+Poniewaz bedzie nie bedzie on pochodzil od tej samej wytwurni, pdfReportFactory nie bedzie znalo tego pdfheadera.
+4. Dlaczego dodanie nowego komponentu (np. „logo") do rodziny w Abstract Factory jest droższe niż dodanie nowej rodziny?
+Poniewaz musimy 1 nowy interfejs + 3 implementacje + 3 modyfikacje fabryk + 1 wywołanie to wlasnie glowna wada tego wzorca.
+5. Wymień przykład Abstract Factory z JDK lub bibliotek Jakarta EE (zestaw standardów do dużych aplikacji serwerowych w Javie — *znajomość Jakarta EE nie jest wymagana, wystarczy przykład z JDK*).
+   DocumentBuilderFactory
+6. Jaki jest podstawowy „test" sensu Abstract Factory — czy potrzebujesz tworzyć **zestaw spójnych** obiektów?
+Tak potrzebujesz poniewaz zestaw spojnych obiektow pokaze nam ile ich jest i wtedy bedziemy mogli podjac decyzje czy oplaca sie pisac Abstract Factory
+
+### 4. Wzorzec Builder
+
+1. Dlaczego konstruktor klasy docelowej (`Email`) jest `private`?
+2. Czemu walidacja **musi** być w `build()` (lub w konstruktorze klasy docelowej), a nie w setterach Buildera?
+3. Wymień dwie kategorie pól w Builderze: wymagane i opcjonalne. Jak każda jest obsługiwana?
+4. Co znaczy „defensywna kopia" listy `attachments` i dlaczego jest potrzebna?
+5. Dlaczego każdy setter Buildera zwraca `this`? Co się stanie, gdy zwróci `void`?
+6. Kiedy preferować Lombok `@Builder` nad ręczną implementacją, a kiedy odwrotnie?
+7. Wymień 2 Buildery z JDK lub bibliotek (`StringBuilder`, `HttpClient`, ...).
+8. Czy record może mieć Builder? Co Builder dodaje do record'a, którego record sam nie ma?

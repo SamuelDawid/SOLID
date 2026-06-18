@@ -5,7 +5,7 @@ public class Main {
     public static void main(String[] args) {
 
         // Klient zna TYLKO interfejs Notification i fabrykę
-        List<String> typy = List.of("EMAIL", "SMS", "PUSH");
+        List<String> typy = List.of("EMAIL", "SMS", "PUSH","SLACK");
 
         for (String typ : typy) {
             Notification n = NotificationFactory.create(typ);
@@ -19,5 +19,7 @@ public class Main {
         } catch (IllegalArgumentException e) {
             System.out.println("Błąd: " + e.getMessage());
         }
+
+
     }
 }
