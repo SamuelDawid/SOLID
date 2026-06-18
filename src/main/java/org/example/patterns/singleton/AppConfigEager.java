@@ -1,4 +1,4 @@
-package org.example.patterns;
+package org.example.patterns.singleton;
 /**
  * Singleton EAGER — instancja tworzona przy ładowaniu klasy.
  * Mechanizm class loadera JVM gwarantuje, że pole `static final` zostanie

@@ -22,8 +22,11 @@ Nie Eager znaczy od razy gdy klasa zostanie zainicjalizowana, ale JVM laduje kla
 ### 2. Wzorzec Factory Method
 
 1. Dlaczego fabryka **musi** zwracać interfejs/abstrakcyjny typ, a nie konkretną klasę?
+Poniewaz Factory Method jest uzywany kiedy nie wiem dokladnie jakie typy obiektow pojawia sie w programie i jake beda miedzy nimi zaleznosci.
 2. Czym różni się Factory Method od bezpośredniego użycia konstruktora `new`?
+Poniewaz zadaniem kreatora nie jest tworzenie nowych produktow, tylko implementacja kluczowej logiki biznesowej
 3. Wymień 3 statyczne metody fabrykujące z JDK i powiedz, jakie korzyści daje ich istnienie zamiast `new`.
+
 4. Co to znaczy, że fabryka może być „rozszerzalna w runtime"? Jak to osiągnąć (rejestr fabryk)?
 5. Kiedy Factory Method jest **przesadą**? (Wskazówka: dla 1-2 typów bez wariantowości.)
 6. Co jest lepsze: `Integer.valueOf(42)` czy `new Integer(42)`? Dlaczego (JDK to celowo deprecuje)?
