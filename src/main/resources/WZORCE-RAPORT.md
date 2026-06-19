@@ -108,34 +108,58 @@
 ### 5. Wzorzec Prototype
 
 1. Wytłumacz różnicę między płytką (shallow) a głęboką (deep) kopią. Podaj scenariusz, kiedy płytka jest pułapką.
-   Plytka kopia kopiuje bezposrednio prymitywne pola ale referencje pol/obiektow dalej prowadza do tego samego zagniezdzonego obiektu jak w originale. 
-   Gleboka kopia takze kopiuje te zagniezdzone pola/obiekty wiec nie ma powiazania pomiedzy oryginalem a kopia. Czyli jezeli cos sotanie zmienione w oryginale to plytka kopia sie zmieni a gleboka bedzie miec to samo value co mialo przed zmiana.
-   Plytka kopia moze byc plapka kiedy mamy na przyklad dwie instancje dokumentu ktore maja te samo liste. Wtedy kiedy zmienimy obiekt do ktorego oba referuja to wtedy zmieni sie wartosc w obu.
+   Plytka kopia kopiuje bezposrednio prymitywne pola ale referencje pol/obiektow dalej prowadza do tego samego
+   zagniezdzonego obiektu jak w originale.
+   Gleboka kopia takze kopiuje te zagniezdzone pola/obiekty wiec nie ma powiazania pomiedzy oryginalem a kopia. Czyli
+   jezeli cos sotanie zmienione w oryginale to plytka kopia sie zmieni a gleboka bedzie miec to samo value co mialo
+   przed zmiana.
+   Plytka kopia moze byc plapka kiedy mamy na przyklad dwie instancje dokumentu ktore maja te samo liste. Wtedy kiedy
+   zmienimy obiekt do ktorego oba referuja to wtedy zmieni sie wartosc w obu.
 2. Dlaczego Joshua Bloch rekomenduje **copy constructor** zamiast `Cloneable`/`clone()`?
-Cloneable jest slabo zaprogramowane, zwraca obiekt ktorego trzeba castowac spowrotem, rzuca checked CloneNotSupportedException i do tego podaje shallow copy by default. Gdzie kopiowanie konstruktora
-albo statyczne copyof zapobiega tym problemom.
+   Cloneable jest slabo zaprogramowane, zwraca obiekt ktorego trzeba castowac spowrotem, rzuca checked
+   CloneNotSupportedException i do tego podaje shallow copy by default. Gdzie kopiowanie konstruktora
+   albo statyczne copyof zapobiega tym problemom.
 3. Czym przykład `ServerConfig.withHost(...)` różni się od `DocumentTemplate.copy()` koncepcyjnie?
-Documenttemplate.copy duplikuje dokladny stan obiektu do nowej niezaleznej instancji dzieki czemu mozna zmienic duplikat bez wplywu na oryginal. 
-ServerConfig.withHost dziala na immutable obiekcie na ktorym nie mozemy zmienic pola wiec zwraca nowa instancje identycznego obiektu z jedna nowa zmienna. 
+   Documenttemplate.copy duplikuje dokladny stan obiektu do nowej niezaleznej instancji dzieki czemu mozna zmienic
+   duplikat bez wplywu na oryginal.
+   ServerConfig.withHost dziala na immutable obiekcie na ktorym nie mozemy zmienic pola wiec zwraca nowa instancje
+   identycznego obiektu z jedna nowa zmienna.
 4. *Pytanie dodatkowe, opcjonalne.* Gdzie w popularnych frameworkach Javy spotkasz Prototype? (Wskazówka: tzw. „scope" —
    *zakres życia* obiektu w kontenerze; jeśli nie używałeś żadnego frameworka, pomiń.)
- w springu bean scope prototype - kontener tworzy nowa isntancje za kazdym razem kiedy bean jest potrzebny. 
-5. Czy record (Java 14+) potrzebuje Prototype? Jaką jego namiastkę daje sam record (kompaktowy konstruktor, deconstruction)?
-  Nie rekord nie potrzebuje prototypu poniwaz jest immuable wiec zmiane tylko jednego pola mozna osiagnac poprzez konstuktor. ORaz posiada canonical/compactcostructor i deconstruction poprzez pattern matching.
+   w springu bean scope prototype - kontener tworzy nowa isntancje za kazdym razem kiedy bean jest potrzebny.
+5. Czy record (Java 14+) potrzebuje Prototype? Jaką jego namiastkę daje sam record (kompaktowy konstruktor,
+   deconstruction)?
+   Nie rekord nie potrzebuje prototypu poniwaz jest immuable wiec zmiane tylko jednego pola mozna osiagnac poprzez
+   konstuktor. ORaz posiada canonical/compactcostructor i deconstruction poprzez pattern matching.
 6. Dlaczego dla niemutowalnej konfiguracji `withXxx` zwraca **nową** instancję, a nie modyfikuje obecnej?
- Poniewaz object jest immutable ma finalne pola i nie ma setterow. Wiec jedyna opcja jest zwrocenie nowej instancji z zmodyfikowana zmienna. 
+   Poniewaz object jest immutable ma finalne pola i nie ma setterow. Wiec jedyna opcja jest zwrocenie nowej instancji z
+   zmodyfikowana zmienna.
 7. Wymień scenariusz biznesowy, w którym Prototype jest tańszy niż klasyczny `new` + setery.
-Kiedy obiekt jest bardzo zlozony/drogi do stworzenia i potrzebujemy kilka wariantow. Wtedy mozemy go zbudowac raz i potem skopiowac i pozmienic co chcemy.
+   Kiedy obiekt jest bardzo zlozony/drogi do stworzenia i potrzebujemy kilka wariantow. Wtedy mozemy go zbudowac raz i
+   potem skopiowac i pozmienic co chcemy.
 
 ### 6. Wzorzec Adapter
 
 1. Czym różni się **object adapter** (kompozycja) od **class adapter** (dziedziczenie)? Który Java preferuje i dlaczego?
+Adapter obiektu przechowuje referencje do adaptowanego obiektow i implementuje interfejs docelowy, kazda metoda deleguje do adaptowanego obiektu i tlumaczy parametry/wyniki.
+Klasa adapter rozszerza dzialanosc adaptowanego obiektu i implementuje interfejs docelowy. Java woli adapter obiektu poniewaz nie ma dziedziczoenia wieloklasowego a adapter poznwala na adaptacje dowolnej instancji i swobodna jej zmiane.
 2. Wymień dwa przykłady Adaptera z JDK i opisz, co i do czego adapteruje.
+   InputStreamReader - tlumaczy byte stream do characters przez uzycie charset.
+   Arrays.asList - tlumaczy zwykla tablice na interface List dzieki czemu mozemy uzywac tablicy w miejsce Listy.
+   Collections.enumeration - tlumaczy Collection/Iterator do starego Enumeration interfejsu.
 3. Adapter zmienia **interfejs**, ale czy zmienia **zachowanie**? Jaka jest jego intencja?
-4. Czemu w `StripeAdapter` mamy konwersję PLN → grosze, a nie po prostu `(long) amountPln`? (Wskazówka: błąd floating-point, `Math.round`.)
-5. Co się stanie, jeśli `LegacyStripeApi` zmieni sygnaturę `charge(...)` w nowej wersji? Co musisz zmienić w klientach? (Tylko adapter — klient `PaymentProcessor` jest izolowany.)
-6. Kiedy Adapter jest **anty-wzorcem**? (Wskazówka: dla małych różnic, lepiej dostosować jeden z interfejsów. Adapter to overkill dla 1 metody.)
+   Nie adapter zmienia interface ale nie zminia zachowania. Ma za zadanie polaczyc dwa niekompatybilne interfejsy w jeden dzialajacy. 
+4. Czemu w `StripeAdapter` mamy konwersję PLN → grosze, a nie po prostu `(long) amountPln`? (Wskazówka: błąd
+   floating-point, `Math.round`.)
+   Poniewaz pieniadze maja zmienne po przecinku a java czesto gubi liczby zmiennoprzecinko np 19.99 moze byc zapisane jako 19.9899, wiec conwertuje grosze uzywajac Math.round wiec nie tracimy pieniedzy po przecinku.
+5. Co się stanie, jeśli `LegacyStripeApi` zmieni sygnaturę `charge(...)` w nowej wersji? Co musisz zmienić w
+   klientach? (Tylko adapter — klient `PaymentProcessor` jest izolowany.)
+   Tylko adapter - klient jest zalezny od interfejsu PaymentProcessor ktory sie nie zmienia. Cale polaczenie odbywa sie w StripeAdapter.
+6. Kiedy Adapter jest **anty-wzorcem**? (Wskazówka: dla małych różnic, lepiej dostosować jeden z interfejsów. Adapter to
+   overkill dla 1 metody.)
+   Kiedy oba interfejsu sa niemal identyczne i roznia sie nieznacznie. Wtedy lepsze jest dostosowanie jednego interjesu niz dodanie kolejnej warsty.
 7. Czy Adapter to to samo co Facade? Jaka jest różnica intencji?
+   Nie, adapter konwertuje instniejacy interfejs na inny, oczekiwany przez klienta aby umozliwic wspolprace dwoch niekompatyblinych czesci. Facade zapewnia nowy prostszy interfejs w zlozonym podsystemie wielu klas.
 
 ## 7. Wzorzec Decorator
 
@@ -143,7 +167,8 @@ Kiedy obiekt jest bardzo zlozony/drogi do stworzenia i potrzebujemy kilka warian
 2. Czy kolejność dekoratorów ma znaczenie? Podaj przykład, w którym `A(B(x))` daje inny wynik niż `B(A(x))`.
 3. Wymień strumień z `java.io`, który jest klasycznym dekoratorem. Jakie zachowanie dodaje?
 4. Dlaczego zamiast 256 klas (`CoffeeWithMilkAndSugarAndCream...`) wystarczy 1 klasa bazowa + N dekoratorów?
-5. Co by się stało, gdyby `MilkDecorator` rozszerzał `Espresso` zamiast implementować `Coffee` (przez `CoffeeDecorator`)? (Wskazówka: nie zadziała dla `Americano`.)
+5. Co by się stało, gdyby `MilkDecorator` rozszerzał `Espresso` zamiast implementować `Coffee` (przez
+   `CoffeeDecorator`)? (Wskazówka: nie zadziała dla `Americano`.)
 6. Czy dekorator może dziedziczyć po dekorowanym obiekcie? Jakie są tego konsekwencje?
 7. Jak dekorator ma się do zasady „kompozycja > dziedziczenie"?
 
@@ -151,8 +176,11 @@ Kiedy obiekt jest bardzo zlozony/drogi do stworzenia i potrzebujemy kilka warian
 
 1. Czym fasada różni się od adaptera? Oba ukrywają coś za sobą — czym?
 2. Dlaczego `OrderFacade.placeOrder(...)` ma **rollback** płatności, gdy magazyn nie ma towaru?
-3. Jakie elementy aplikacji powinny być za fasadą, a jakie nie? (Wskazówka: złożone podsystemy z kilkoma krokami, NIE prosta klasa z jedną metodą.)
-4. Czy fasada może mieć swoją własną logikę biznesową? Czym fasada różni się od zwykłej klasy „Service" (klasy serwisowej, która zawiera logikę domenową)? (Wskazówka: fasada *orkiestruje* podsystemy, serwis *implementuje* logikę. To są dwie różne role, choć implementacja klasą może wyglądać podobnie.)
+3. Jakie elementy aplikacji powinny być za fasadą, a jakie nie? (Wskazówka: złożone podsystemy z kilkoma krokami, NIE
+   prosta klasa z jedną metodą.)
+4. Czy fasada może mieć swoją własną logikę biznesową? Czym fasada różni się od zwykłej klasy „Service" (klasy
+   serwisowej, która zawiera logikę domenową)? (Wskazówka: fasada *orkiestruje* podsystemy, serwis *implementuje*
+   logikę. To są dwie różne role, choć implementacja klasą może wyglądać podobnie.)
 5. Wymień przykład fasady z JDK lub biblioteki Java.
 6. Co znaczy „god class" w kontekście fasady i jak tego uniknąć?
 7. Jak fasada wspiera zasadę Demeter (Law of Demeter)? Czy zmniejsza, czy zwiększa sprzężenie?
@@ -162,11 +190,12 @@ Kiedy obiekt jest bardzo zlozony/drogi do stworzenia i potrzebujemy kilka warian
 1. Czym Proxy różni się od Decorator? (Jedna odpowiedź dotyczy intencji — jakiej?)
 2. Wyjaśnij, dlaczego Dynamic Proxy wymaga **interfejsu**. Co zrobiłbyś, gdyby twoja klasa nie miała interfejsu?
 3. Dlaczego wywołanie `this.metoda()` z wnętrza klasy **omija** Proxy w nowoczesnych frameworkach?
-4. Wymień 3 *cross-cutting concerns* (czyli funkcjonalności potrzebne w wielu klasach naraz — typu logowanie, cache, autoryzacja, audyt, pomiar czasu), które naturalnie pasują do Proxy.
+4. Wymień 3 *cross-cutting concerns* (czyli funkcjonalności potrzebne w wielu klasach naraz — typu logowanie, cache,
+   autoryzacja, audyt, pomiar czasu), które naturalnie pasują do Proxy.
 5. Jakie 3 elementy musisz przekazać do `Proxy.newProxyInstance(...)`?
-6. Co robi `method.invoke(target, args)` wewnątrz `InvocationHandler.invoke`? Dlaczego nie wywołujesz target bezpośrednio?
+6. Co robi `method.invoke(target, args)` wewnątrz `InvocationHandler.invoke`? Dlaczego nie wywołujesz target
+   bezpośrednio?
 7. Co znaczy „stackowanie" proxy? Podaj przykład sensownej kolejności (logging vs caching vs auth).
-
 
 ## 10. Wzorzec Composite
 
@@ -182,7 +211,8 @@ Kiedy obiekt jest bardzo zlozony/drogi do stworzenia i potrzebujemy kilka warian
 
 1. Czym Strategy różni się od Factory Method? (Wskazówka: Factory **tworzy** obiekty, Strategy **wykonuje** algorytm.)
 2. Dlaczego Java 8+ ułatwia Strategy? (Wskazówka: interfejs funkcyjny + lambda = jedna linia.)
-3. Wyjaśnij, dlaczego dispatch table (Map) jest lepsza od switch. Co możesz w runtime zmienić w mapie, czego nie zmienisz w switch?
+3. Wyjaśnij, dlaczego dispatch table (Map) jest lepsza od switch. Co możesz w runtime zmienić w mapie, czego nie
+   zmienisz w switch?
 4. Wymień klasyczny przykład Strategy w JDK.
 5. Co znaczy „kompozycja strategii"? Podaj przykład.
 6. Czy `Comparator` to Strategy? Uzasadnij.
@@ -232,7 +262,8 @@ Kiedy obiekt jest bardzo zlozony/drogi do stworzenia i potrzebujemy kilka warian
 5. Czy iterator musi wskazywać na istniejącą strukturę? (Wskazówka: `RangeIterator` generuje w locie.)
 6. Co to jest `ConcurrentModificationException` i kiedy się pojawia?
 7. Jak iterator współgra ze Stream w Javie?
-8. Czy `for (int i = 0; i < list.size(); i++)` to też Iterator? (Wskazówka: nie, to pętla indeksowana. Iterator nie zna „indeksu".)
+8. Czy `for (int i = 0; i < list.size(); i++)` to też Iterator? (Wskazówka: nie, to pętla indeksowana. Iterator nie zna
+   „indeksu".)
 9. Wymień klasyczną sytuację, w której musisz napisać własny Iterator (a nie użyć kolekcji JDK).
 
 ## 16. Wzorzec State
@@ -243,7 +274,8 @@ Kiedy obiekt jest bardzo zlozony/drogi do stworzenia i potrzebujemy kilka warian
 4. Wyjaśnij, dlaczego setter `setState(...)` w `Order` jest `package-private`, a nie `public`.
 5. Wymień przykład State w JDK (`Thread.State`).
 6. Jak State pomaga w testowaniu? (Wskazówka: każdy stan testowany osobno, bez przygotowania całej historii.)
-7. Czy `RefundedState.pay()` powinien zwracać do `RefundedState` czy do nowego stanu „refundowane drugi raz"? (Filozofia projektu — od ciebie zależy.)
+7. Czy `RefundedState.pay()` powinien zwracać do `RefundedState` czy do nowego stanu „refundowane drugi raz"? (Filozofia
+   projektu — od ciebie zależy.)
 8. Kiedy NIE używać State? (Wskazówka: dla 2 stanów wystarczy boolean, dla 3 stanów ze stabilną logiką — enum.)
 
 ## 17. Wzorzec Chain of Responsibility
