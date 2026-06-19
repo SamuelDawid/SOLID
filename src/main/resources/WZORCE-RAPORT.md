@@ -222,12 +222,19 @@ Tak ma znaczenie np. Encrypt(Compress(x)) dziala dobrze ale jezeli odwrocimy te 
 ## 10. Wzorzec Composite
 
 1. Czym różni się **liść** od **composite** w tym wzorcu?
+   Lisc nie ma "children" gdzie composite ma "children" i implementuje taki sam interfejs, delegujac jego operacje do nich.
 2. Dlaczego klient nie potrzebuje wiedzieć, czy obiekt to plik czy folder?
+   Poniewaz oba implementuja ten sam interfejs, wiec klijent wywoluje te sama metode jednostajnie. 
 3. Wymień przykład Composite z biblioteki UI Javy (Swing/JavaFX).
+   Swing Container/JComponent — a JPanel ktory ma w sobie wiele komponentow. 
 4. Jak wzorzec radzi sobie z metodami typu `add(child)` — czy powinny być w interfejsie, czy tylko w composite?
+   tradycyjnie add(child) powinno znajdowac sie w composite, wywolujac kompromis pomiedzy transparency and type safety.
 5. Co się stanie, jeśli struktura ma cykl (A zawiera B, B zawiera A)? Jak temu zapobiec?
+   Infinite recursion/stack overflow, zapobiec temu mozna poprzez wymuszenie drzewa.
 6. Jak Composite ma się do struktury DOM w HTML / XML?
+   DOM to composite tree, komponent zawiera "child nodes".
 7. Wymień scenariusz biznesowy, w którym Composite jest naturalny.
+   system plikow, chart organizacji, nested menus, nested UI layout.
 
 ## 11. Wzorzec Strategy (z lambdami w Java 8+)
 
