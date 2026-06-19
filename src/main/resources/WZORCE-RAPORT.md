@@ -183,15 +183,22 @@ Tak ma znaczenie np. Encrypt(Compress(x)) dziala dobrze ale jezeli odwrocimy te 
 ## 8. Wzorzec Facade
 
 1. Czym fasada różni się od adaptera? Oba ukrywają coś za sobą — czym?
+   Adapter przetwarza jeden interface niekompatybiny na inny kompatybilny. Fasada daje jednen prostszy interfejs zamiast skomplikowanego systemu. Adapter ukrywa niekompatybilny interfejs, gdzie fasada ukrywa zlozonosc systemu.
 2. Dlaczego `OrderFacade.placeOrder(...)` ma **rollback** płatności, gdy magazyn nie ma towaru?
+   Poniewaz OrderFacade organizuje wieloetapowa transakcje, jezeli pozniejszy etap sie nie powiedzie wczesniejszy sukces musi zostac anulowany w przeciwnym razie klient zostanie obciazony oplata.
 3. Jakie elementy aplikacji powinny być za fasadą, a jakie nie? (Wskazówka: złożone podsystemy z kilkoma krokami, NIE
    prosta klasa z jedną metodą.)
+   zlozone podsystemy z kilkoma skoordynowanymi klasami powinny byc fasada. A proste jedno metodowe klasy nie.
 4. Czy fasada może mieć swoją własną logikę biznesową? Czym fasada różni się od zwykłej klasy „Service" (klasy
    serwisowej, która zawiera logikę domenową)? (Wskazówka: fasada *orkiestruje* podsystemy, serwis *implementuje*
    logikę. To są dwie różne role, choć implementacja klasą może wyglądać podobnie.)
+   Fasada glownie koordynuje podsystemy i delegatow. Service implementuje logike domeny, podonie jak klasy rozne role, kiedy fasada jest przeladowana wlasna logika robi sie z niej god class.
 5. Wymień przykład fasady z JDK lub biblioteki Java.
+   SLF4J - logger , java.net.url/URLConnection - hides networking complexity. 
 6. Co znaczy „god class" w kontekście fasady i jak tego uniknąć?
+   Kidy fasada zamiast delegowac zaczyna implementowac logike biznesowa. Mozemy tego uniknac jezeli podzielimy ja na skoncentrowane fasady a logike biznesowa zostawimy Servicowi.
 7. Jak fasada wspiera zasadę Demeter (Law of Demeter)? Czy zmniejsza, czy zwiększa sprzężenie?
+   Zmniejsza je. Klienci komunikują się tylko z fasadą, zamiast korzystać z łańcuchów takich jak a.getB().getC().doX(); fasada staje się jedynym bezpośrednim współpracownikiem.
 
 ## 9. Wzorzec Proxy (Static + Dynamic Proxy)
 
