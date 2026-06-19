@@ -340,14 +340,22 @@ Tak ma znaczenie np. Encrypt(Compress(x)) dziala dobrze ale jezeli odwrocimy te 
 ## 16. Wzorzec State
 
 1. Czym State różni się od Strategy? Oba „wymieniają zachowanie" — gdzie różnica?
+   Warianty strategii są niezależne i wybierane przez klienta. Warianty stanu to cykl życia obiektu i przejścia między nimi w zależności od akcji; zachowanie zmienia się wraz ze zmianą stanu wewnętrznego.
 2. Dlaczego context (`Order`) nie ma ani jednego `if/else` w metodach `pay/ship`?
+   zachowanie jest delegowane do bieżącego obiektu stanu; każdy stan implementuje pay/ship na swój własny sposób — polimorfizm zastępuje warunki.
 3. Kto decyduje o przejściu między stanami — Context czy State?
+   Zazwyczaj sam stan (każdy stan zna swój następnik i wywołuje setState kontekstu). Kontekst może go również kontrolować, ale GoF umieszcza go w stanach.
 4. Wyjaśnij, dlaczego setter `setState(...)` w `Order` jest `package-private`, a nie `public`.
+   Zatem tylko stany (ten sam pakiet) mogą zmieniać stan zamówienia — kod zewnętrzny nie może wymusić nielegalnego przejścia. Hermetyzuje on maszynę stanów.
 5. Wymień przykład State w JDK (`Thread.State`).
+   Thread.State (NEW, RUNNABLE, BLOCKED, WAITING, TERMINATED) - dozwolone zachowanie zależy od bieżącego stanu.
 6. Jak State pomaga w testowaniu? (Wskazówka: każdy stan testowany osobno, bez przygotowania całej historii.)
+   każdy stan jest osobną klasą, którą można testować w izolacji.
 7. Czy `RefundedState.pay()` powinien zwracać do `RefundedState` czy do nowego stanu „refundowane drugi raz"? (Filozofia
    projektu — od ciebie zależy.)
+   Design choice, Jeśli drugi zwrot jest bezsensowny - RefundedState, jeśli ma wyraźne znaczenie, stwórz nowy model.
 8. Kiedy NIE używać State? (Wskazówka: dla 2 stanów wystarczy boolean, dla 3 stanów ze stabilną logiką — enum.)
+   wartość logiczna; ~3 stany ze stabilną logiką → wyliczenie. Klasy Full State przynoszą korzyści w postaci wielu stanów i bogatego, bogatego w przejścia zachowania.
 
 ## 17. Wzorzec Chain of Responsibility
 
