@@ -360,13 +360,23 @@ Tak ma znaczenie np. Encrypt(Compress(x)) dziala dobrze ale jezeli odwrocimy te 
 ## 17. Wzorzec Chain of Responsibility
 
 1. Co decyduje, czy handler obsłuży żądanie, czy przekaże dalej?
+   każdy z obsługujących sprawdza, czy żądanie jest zgodne z jego odpowiedzialnością. Jeśli może je obsłużyć, to obsługuje je (i może je zatrzymać), w przeciwnym razie przekazuje je następnemu.
 2. Co się stanie, gdy handler ZAPOMNI wywołać `passToNext`?
+   łańcuch w tym miejscu się zrywa — żądania, których nie można obsłużyć, są po prostu odrzucane i nigdy nie docierają do późniejszych obsług.
 3. Wyjaśnij, dlaczego kolejność handlerów ma znaczenie. Podaj przykład.
+   Wcześniejsze procedury obsługi mogą zatrzymać lub przekształcić żądanie. Przykład: procedura obsługi uwierzytelniania musi zostać uruchomiona przed logiką biznesową (najpierw odrzucaj niezweryfikowane); lub konkretny filtr przed filtrem ogólnym.
 4. Czym Chain of Responsibility różni się od Pipeline (lista)? Kiedy które wybrać?
+   W łańcuchu każdy handler decyduje, czy obsłużyć i czy przekazać dalej – przetwarzanie może zostać przerwane przedwcześnie. Potok uruchamia każdy etap w kolejności, każdy transformując dane. Łańcuch = jeden z kilku, który go obsługuje; potok = każdy krok przetwarzania.
 5. Wymień klasyczny przykład Chain of Responsibility w bibliotece Java (Servlet Filters).
+   Łańcuch filtrów serwletów (FilterChain.doFilter) — każdy filtr obsługuje lub przekazuje do następnego.
 6. Jak handler może powiedzieć „nie obsługuję, ktoś inny niech tym się zajmie"?
+   nie obsługuje go i wywołuje następny moduł obsługi, przekazując żądanie w dół łańcucha.
 7. Co odróżnia Chain od Decorator? Oba „opakowują" — czym?
+   Dekorator zawsze dodaje zachowanie i zawsze deleguje (każda warstwa jest uruchamiana). W łańcuchu obiekt obsługujący może zatrzymać żądanie — przetwarzanie kończy się na osobie, która je obsługuje.
 8. Jak przetestować pojedynczy handler w izolacji?
+   ustaw jego następny element jako mock/stub, wyślij żądanie, które powinien obsłużyć i potwierdź jego działanie; wyślij żądanie, którego nie powinien obsłużyć i zweryfikuj, czy zostało przekazane (wywołujesz mock next).
 9. Kiedy NIE używać Chain of Responsibility? (Wskazówka: dla 2 prostych warunków wystarczy if/else.)
+   2 proste warunki → proste if/else. Opłaca się przy wielu procedurach obsługi, dynamicznej kolejności lub dodawaniu/usuwaniu w czasie wykonywania.
 10. Jak Chain ma się do middleware'u w nowoczesnych frameworkach webowych?
+    middleware opiera się na tej samej idei — żądanie przechodzi przez uporządkowaną serię, z których każda może być obsłużona, zmodyfikowana, zwarta lub przekazana dalej (Express, ASP.NET, filtry Servlet).
 
