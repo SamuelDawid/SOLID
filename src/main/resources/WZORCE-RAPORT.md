@@ -259,13 +259,21 @@ Tak ma znaczenie np. Encrypt(Compress(x)) dziala dobrze ale jezeli odwrocimy te 
 ## 12. Wzorzec Observer (PropertyChangeSupport + ręcznie)
 
 1. Wytłumacz, dlaczego publisher (`OrderService`) nie powinien znać konkretnych listenerów.
+   Aby zachowac separacje, jest ona zalezna wylacznie od interfejsu nasluchujacego, wiec subskrybentow mozna dodawac di usuwac bez zmiany wydawcy.
 2. Dlaczego pętla `publish` ma try/catch wokół każdego listenera? Co się stanie bez tego?
+   Poniewaz wywolanie wyjatku na jednym z sluchajacych zastopowala by petle i reszta powiadomien by nie przeszla. Try/catch izoluje bledy.
 3. Co to jest `CopyOnWriteArrayList` i dlaczego pasuje do EventBus?
+   Bezpieczna dla watkow lista, ktora kopiuje swoja tablice przy kazdym zapisie. Pasuje poniewaz liczba odczytow znacznie przewyzsza liczbe zapisow.
 4. Czym `PropertyChangeSupport` różni się od ręcznego EventBus? Gdzie używałbyś każdego?
+   PCS jest wbudowany w JDK dla powiadamiania o zmianach właściwości obiektów bean, niestandardowy EventBus obsługuje wiele typów zdarzeń domenowych w całej aplikacji.
 5. Wymień klasyczny problem memory leak w Observer i jak go uniknąć.
+   Występuje on, gdy obserwator rejestruje się w obserwowanym obiekcie (Subject), ale zapomina się wyrejestrować po zakończeniu swojego cyklu życia.
 6. Jak Observer ma się do event-driven architecture i message brokerów (Kafka, RabbitMQ)?
+   technologie służące do budowy systemów luźno powiązanych (loosely coupled), w których komponenty komunikują się bez bezpośredniej zależności.
 7. Jak przetestować, że listener X obsługuje event Y?
+   Verify przez mock ze Y bylo invoked.
 8. Co odróżnia Observer od Mediator? (Wskazówka: Mediator wie o wszystkich, Observer nie.)
+   Obserwator – wydawca nie zna subskrybentów, Mediator zna wszystkich uczestników i koordynuje ich interakcje
 
 ## 13. Wzorzec Command (z Undo)
 
