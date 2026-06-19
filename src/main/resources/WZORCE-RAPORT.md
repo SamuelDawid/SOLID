@@ -203,14 +203,21 @@ Tak ma znaczenie np. Encrypt(Compress(x)) dziala dobrze ale jezeli odwrocimy te 
 ## 9. Wzorzec Proxy (Static + Dynamic Proxy)
 
 1. Czym Proxy różni się od Decorator? (Jedna odpowiedź dotyczy intencji — jakiej?)
+   Celem proxy jest kontrola dostepu gdzie dekorator ma za zadanie dodawanie zachowan.
 2. Wyjaśnij, dlaczego Dynamic Proxy wymaga **interfejsu**. Co zrobiłbyś, gdyby twoja klasa nie miała interfejsu?
+   java.lang.reflext.Proxy - generuje klase ktora implementuje dany interfejs przy runtime, wiec obiekt musi jaki podac. Bez podania zadnego interfejsu uzywamy subclass-based proxy.
 3. Dlaczego wywołanie `this.metoda()` z wnętrza klasy **omija** Proxy w nowoczesnych frameworkach?
+   poniewaz proxy opakowywuje obiekt z zewnatrz, a this jest wolane bezposrednio przez prawdziwy obiekt, pomija wrapper wiec logika proxy nie zostaje uruchomiona.
 4. Wymień 3 *cross-cutting concerns* (czyli funkcjonalności potrzebne w wielu klasach naraz — typu logowanie, cache,
    autoryzacja, audyt, pomiar czasu), które naturalnie pasują do Proxy.
+   logging, caching, authorization, auditing. 
 5. Jakie 3 elementy musisz przekazać do `Proxy.newProxyInstance(...)`?
+   ClassLoader, array of interfaces to implement and InvocationHandler.
 6. Co robi `method.invoke(target, args)` wewnątrz `InvocationHandler.invoke`? Dlaczego nie wywołujesz target
    bezpośrednio?
+   refleksyjnie wywoluje rzeczywista metode ktora zostala przechowycona przekazuja argumenty. Refleksja jest konieczna poniwaz handler jest generyczny i nie zna metody w compileTime.
 7. Co znaczy „stackowanie" proxy? Podaj przykład sensownej kolejności (logging vs caching vs auth).
+   Opakakowywanie kilku serwerow proxy z ktorych kazdy wprowadza jeden problem, kolejnosc to auth -> caching -> logging.
 
 ## 10. Wzorzec Composite
 
