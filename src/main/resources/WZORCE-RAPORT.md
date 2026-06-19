@@ -299,13 +299,21 @@ Tak ma znaczenie np. Encrypt(Compress(x)) dziala dobrze ale jezeli odwrocimy te 
 ## 14. Wzorzec Template Method
 
 1. Co znaczy „template method" — czy to klasa, metoda, czy oba?
+   template method oznacza metode w abstrakcyjnej klasie bazowej, ktora definiuje stały szkielet algorytmu i wywołuje nadpisywane kroki. Wzorzec używa klasy bazowej + tej metody.
 2. Dlaczego metoda template (np. `importData`) jest często `final`?
+   Aby zablokowac struktore ale kolejnosc krokow, wiec subclassy nie mogly zmieniac cih kolejności.
 3. Co to jest **hook** w Template Method? Podaj przykład z naszego kodu.
+   krok z domyślną (często pustą) implementacją, którą podklasy mogą zastąpić, ale nie muszą.
 4. Czym Template Method różni się od Strategy? Oba pozwalają „zmienić algorytm" — gdzie różnica?
+   Metoda szablonowa zmienia kroki poprzez dziedziczenie, strategia zmienia cały algorytm poprzez kompozycję.
 5. Wymień klasyczny przykład Template Method w JDK (`HttpServlet`, `AbstractList`).
+   HttpServlet (service() to szablon,override doGet/doPost, AbstractList (implementacja get/size). 
 6. Czy podklasa może zmienić **kolejność** kroków w algorytmie? Dlaczego nie?
+   nie - kolejność znajduje się w metodzie szablonu; podklasy wypełniają liste kroków.
 7. Jak Template Method ma się do zasady „kompozycja > dziedziczenie"? (Wskazówka: tu dziedziczenie jest wymagane.)
+   jezeli dzieidzenie jest wymagane to baza jest właścicielem szkieletu, a podklasy go rozszerzają. Strategia to alternatywa dla kompozycji zapewniająca elastyczność w czasie wykonywania.
 8. Co odróżnia metodę `abstract` od metody z domyślną implementacją (hook) w klasie bazowej?
+   abstract musi byc zaimplementowane, gdzie hook ma wartosc domyslna i moze byc nadpisany.
 
 ## 15. Wzorzec Iterator (własny + integracja z Iterable)
 
