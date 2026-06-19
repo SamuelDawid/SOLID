@@ -164,13 +164,21 @@ Klasa adapter rozszerza dzialanosc adaptowanego obiektu i implementuje interfejs
 ## 7. Wzorzec Decorator
 
 1. Wytłumacz, czym dekorator różni się od **proxy** (na poziomie intencji, nie struktury).
+Dekorator dodaje zachowanie do obiektu, proxy kontroluje dostep do obiektu.
 2. Czy kolejność dekoratorów ma znaczenie? Podaj przykład, w którym `A(B(x))` daje inny wynik niż `B(A(x))`.
+Tak ma znaczenie np. Encrypt(Compress(x)) dziala dobrze ale jezeli odwrocimy te operacje bo pranie nic nie zostanie skompresowane poniewaz ekryptowane dane wygladaja randomowo i nie nadaja sie do kompresi.
 3. Wymień strumień z `java.io`, który jest klasycznym dekoratorem. Jakie zachowanie dodaje?
+ BufferedReader - opakowywuje Reader/InputStream i dodaje buffering.
 4. Dlaczego zamiast 256 klas (`CoffeeWithMilkAndSugarAndCream...`) wystarczy 1 klasa bazowa + N dekoratorów?
+ Dekoraotry komponuja sie w czasie wykonywania wiec N dekoratorow daje wszystkie 2^N kombinacji z N klasami.
 5. Co by się stało, gdyby `MilkDecorator` rozszerzał `Espresso` zamiast implementować `Coffee` (przez
    `CoffeeDecorator`)? (Wskazówka: nie zadziała dla `Americano`.)
+   dekorowalby tylko espresso, a nie americano ani zadna inna kawe. Dekorowanie na interfejsie kawy pozwala na owiniecie nim dowolnej kawy.
 6. Czy dekorator może dziedziczyć po dekorowanym obiekcie? Jakie są tego konsekwencje?
+   Moze na poziomie klas, ale wtedy wiaze dekorator z jednym typem, nie moze opakowac dowolnych implementacji.
 7. Jak dekorator ma się do zasady „kompozycja > dziedziczenie"?
+   Preferowana jest kompozycja wzgledem interfejsu. „kompozycja > dziedziczenie” — zachowanie jest dodawane poprzez opakowanie (kompozycję) w czasie wykonywania, a nie przez podklasowanie dla każdej kombinacji.
+
 
 ## 8. Wzorzec Facade
 
