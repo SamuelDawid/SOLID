@@ -318,15 +318,24 @@ Tak ma znaczenie np. Encrypt(Compress(x)) dziala dobrze ale jezeli odwrocimy te 
 ## 15. Wzorzec Iterator (własny + integracja z Iterable)
 
 1. Wymień dwa interfejsy potrzebne, by twoja kolekcja działała w for-each.
+   Iterable<T> and Iterator<T>
 2. Jakie dwie metody ma `Iterator<T>`? Co każda robi?
+   hasNext() (czy istnieje inny element?) i next() (zwraca następny i przechodzi dalej). (Opcjonalne remove().)
 3. Dlaczego konwencja mówi „każde wywołanie `iterator()` to nowy, świeży iterator"?
+   Dzieki temu niezalezne iteracje w tym samym czasie ze soba nie koliduja.
 4. Jak iterator może ukrywać złożoną strukturę (drzewo)? Co robi `Tree.iterator()`?
+   ujawnia elementy pojedynczo w wybranej kolejnosci, ukrywajac przegladanie. Tree.iterator() przeszukuje drzewo wewnętrznie, dzięki czemu klient iteruje bez znajomości struktury.
 5. Czy iterator musi wskazywać na istniejącą strukturę? (Wskazówka: `RangeIterator` generuje w locie.)
+   Nie — może generować w locie. RangeIterator oblicza kolejną liczbę w next() bez konieczności przechowywania danych.
 6. Co to jest `ConcurrentModificationException` i kiedy się pojawia?
+   gdy kolekcja jest strukturalnie modyfikowana podczas iteracji.
 7. Jak iterator współgra ze Stream w Javie?
+   Oba generują elementy leniwie; można je łączyć.
 8. Czy `for (int i = 0; i < list.size(); i++)` to też Iterator? (Wskazówka: nie, to pętla indeksowana. Iterator nie zna
    „indeksu".)
+   nie, to pętla indeksowana. Iterator nie zna indexu, zna tylko hasNext i next wiec dziala na strukturach bez losowagego dostepu.
 9. Wymień klasyczną sytuację, w której musisz napisać własny Iterator (a nie użyć kolekcji JDK).
+   iterowanie niestandardowej/niekolekcyjnej struktury (drzewo, graf, podzielony na strony interfejs API, wygenerowana sekwencja) bez kolekcji JDK do ponownego wykorzystania.
 
 ## 16. Wzorzec State
 
