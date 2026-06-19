@@ -239,14 +239,22 @@ Tak ma znaczenie np. Encrypt(Compress(x)) dziala dobrze ale jezeli odwrocimy te 
 ## 11. Wzorzec Strategy (z lambdami w Java 8+)
 
 1. Czym Strategy różni się od Factory Method? (Wskazówka: Factory **tworzy** obiekty, Strategy **wykonuje** algorytm.)
+   Factory tworzy objekty, a Strategy wykonuje wymienny algorytm, jeden zwraca instancje drugi hermetyzuje uruchamiane przez nas zachowanie.
 2. Dlaczego Java 8+ ułatwia Strategy? (Wskazówka: interfejs funkcyjny + lambda = jedna linia.)
+   strategia to zazwyczaj interfejs jednometodowy (funkcjonalny), więc przekazujemy lambdę zamiast całej klasy.
 3. Wyjaśnij, dlaczego dispatch table (Map) jest lepsza od switch. Co możesz w runtime zmienić w mapie, czego nie
    zmienisz w switch?
+   Mapa umozliwia dodawanie/zastepowani/usuwanie wpisow w runeTime, a switch jest wybierany w trakcie compileTime i musi byc edytowany i recompilowany aby dodac nowy przypadek.
 4. Wymień klasyczny przykład Strategy w JDK.
+   Comparator passed to Collections.sort/List.sort.
 5. Co znaczy „kompozycja strategii"? Podaj przykład.
+   łączenie małych strategii w jedną większą
 6. Czy `Comparator` to Strategy? Uzasadnij.
+   Tak, zaiwra wymienny algorytm porownania kezekazywany do kotekstu, ktory go wykorzystuje, nie znajac konkretnej logiki.
 7. Kiedy Strategy jest **przesadą**? (Wskazówka: dla 2 wariantów bez planowanego wzrostu.)
+   Kiedy mozna go zamienic prostym if else np 2 stale warianty.
 8. Czy strategia powinna trzymać stan? (Wskazówka: jeśli tak, traci „funkcyjność" — wtedy bliżej do Command.)
+   Najlepiej nie, czysty algorytm bezstanowy.
 
 ## 12. Wzorzec Observer (PropertyChangeSupport + ręcznie)
 
