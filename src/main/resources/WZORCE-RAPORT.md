@@ -278,14 +278,23 @@ Tak ma znaczenie np. Encrypt(Compress(x)) dziala dobrze ale jezeli odwrocimy te 
 ## 13. Wzorzec Command (z Undo)
 
 1. Czym Command różni się od Strategy? Oba kapsułują „coś do zrobienia" — czym konkretnie się różnią?
+   Strategia hermetyzuje wymienny algorytm podłączony do kontekstu. Polecenie hermetyzuje całe żądanie/akcję (odbiorca + parametry) jako obiekt, dzięki czemu można je przechowywać, kolejkować, rejestrować i cofać.
 2. Wymień 4 elementy wzorca Command (Receiver, Command, Invoker, Client).
+   Odbiorca (wykonuje pracę), Polecenie (akcja + odbiorca), Wywołujący (uruchamia), Klient (tworzy/konfiguruje).
 3. Czemu makro (`MacroCommand`) cofa w **odwrotnej** kolejności?
+   Poniwaz akcje sa uporządkowane, więc aby cofnięcie było poprawne, należy wykonać operację od ostatniej operacji - LIFO.
 4. Jak komenda zapamiętuje stan potrzebny do undo? Wymień strategię z `DeleteCommand`.
+   memento - Przechowuje informacje potrzebne do cofnięcia operacji, DeleteCommand zapisuje usunięty element i jego pozycję, a następnie cofa go i ponownie wstawia.
 5. Jak `Runnable` ma się do Command?
+   runnable to command albo jego funcionalna postac bez mozliwosci undo.
 6. Wymień przykład Command w GUI Javy.
+   Swing Action/AbstractAction powiązane z przyciskami i elementami menu.
 7. Co się stanie, jeśli klient wywoła `undo` 100 razy z pustym stosem?
+   nie sie nie stanie, stack jest empty.
 8. Kiedy NIE należy używać Command? (Wskazówka: prosty CRUD bez undo/historii.)
+   prosty CRUD bez cofania, historii, kolejkowania ani rejestrowania.
 9. Jak Command pasuje do kolejkowania (queue) i retry?
+   kcja jest obiektem niezależnym, więc może znajdować się w kolejce, zostać uruchomiona później lub w innym miejscu, i byc uruchomione ponownie przy failure.
 
 ## 14. Wzorzec Template Method
 
